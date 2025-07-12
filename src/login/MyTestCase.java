@@ -1,5 +1,6 @@
 package login;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
@@ -28,10 +29,11 @@ public class MyTestCase {
 	public void mySetup() {
 		driver.get(TheURL);
 		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 		
 	}
 	
-	@Test(priority = 1)
+	@Test(priority = 1,enabled=false)
 	public void signUp() throws InterruptedException {
 		driver.navigate().to("https://automationteststore.com/index.php?rt=account/create");
 		
@@ -118,7 +120,7 @@ public class MyTestCase {
 			
 	}
 	
-	@Test(priority = 2)
+	@Test(priority = 2,enabled=false)
 	public void Logout() throws InterruptedException {
 		WebElement Logout = driver.findElement(By.linkText("Logoff"));
 		
@@ -127,7 +129,7 @@ public class MyTestCase {
 		
 	}
 	
-	@Test(priority = 3)
+	@Test(priority = 3,enabled=false)
 	public void Login() throws InterruptedException {
 	
 		WebElement LoginAndRegister = driver.findElement(By.linkText("Login or register"));
@@ -143,8 +145,32 @@ public class MyTestCase {
 		
 		WebElement loginButton = driver.findElement(By.xpath("//button[@title='Login']"));	
 		loginButton.click();
+	}
 	
+	@Test(priority = 4)
+	public void addItemToCart() throws InterruptedException {
 		
+		driver.navigate().to("https://automationteststore.com/");
+		String [] sectionName = {"featured,latest","bestseller","special"};
+		int randomSectionIndex = rand.nextInt(sectionName.length);
 		
+		WebElement featured = driver.findElement(By.id(sectionName[randomSectionIndex]));
+		List<WebElement> allItems = featured.findElements(By.className("prdocutname"));
+		int randomProduct = rand.nextInt(allItems.size());
+		allItems.get(randomProduct).click();
+		Thread.sleep(3000);
+		
+		String productPage = driver.findElement(By.className("productpagecart")).getText();
+		
+		if(productPage.equals("Out of stock")) {
+			driver.navigate().back();
+		}
+		else {
+			if(driver.getCurrentUrl().contains("product_id=116")) {
+				Thread.sleep(2000);
+				driver.findElement(By.xpath("//label[@for='option344747']")).click();
+			}
+			driver.findElement(By.partialLinkText("Add to Cart")).click();
+		}
 	}
 }
