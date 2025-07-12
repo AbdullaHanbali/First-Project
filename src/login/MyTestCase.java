@@ -31,7 +31,7 @@ public class MyTestCase {
 		
 	}
 	
-	@Test(priority = 1, enabled = false)
+	@Test(priority = 1)
 	public void signUp() throws InterruptedException {
 		driver.navigate().to("https://automationteststore.com/index.php?rt=account/create");
 		
@@ -118,7 +118,7 @@ public class MyTestCase {
 			
 	}
 	
-	@Test(priority = 2, enabled = false)
+	@Test(priority = 2)
 	public void Logout() throws InterruptedException {
 		WebElement Logout = driver.findElement(By.linkText("Logoff"));
 		
